@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงเวลา</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1d1f21; /* Dark background */
+            color: #c8d0d6; /* Light text color */
+            background-image: url('images/dragon-robot.png'); /* Path to your dragon robot image */
+            background-size: cover; /* Ensure image covers entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(51, 51, 51, 0.8); /* Dark transparent background for container */
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+        }
+        .time {
+            font-size: 3rem;
+            margin: 20px 0;
+            color: #ff3b30; /* Neon red for time */
+        }
+        .label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4a4a4a; /* Dark grey button */
+            color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff3b30; /* Neon red hover effect */
+        }
+        input {
+            padding: 10px;
+            font-size: 1.2rem;
+            width: 200px;
+            border: 2px solid #444;
+            border-radius: 5px;
+            background-color: #222;
+            color: #f0f0f0;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ff3b30; /* Neon red focus border */
+        }
+    </style>
+</head>
+<body>
+    <div id="main-screen" class="container">
+        <div class="time" id="current-time">--:-- --</div>
+        <div class="label">กรอกรหัสพนักงาน</div>
+        <input type="text" id="employee-id" placeholder="รหัสพนักงาน" />
+        <div class="buttons">
+            <button onclick="submitTime()">ลงเวลา</button>
+            <button onclick="goBack()">ย้อนกลับ</button>
+        </div>
+    </div>
+
+    <div id="summary-screen" class="container" style="display: none;">
+        <div class="time" id="summary-time">--:-- --</div>
+        <div class="label">ยืนยันการลงเวลา</div>
+        <div id="summary-employee-id">&lt;employee_id&gt;</div>
+        <div class="buttons">
+            <button onclick="returnToMain()">ย้อนกลับ</button>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedTime = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+            document.getElementById('current-time').textContent = formattedTime;
+            document.getElementById('summary-time').textContent = formattedTime;
+        }
+
+        setInterval(updateTime, 1000);
+
+        function submitTime() {
+            const employeeId = document.getElementById('employee-id').value;
+            if (!employeeId.trim()) {
+                alert('กรุณากรอกรหัสพนักงาน');
+                return;
+            }
+            document.getElementById('summary-employee-id').textContent = employeeId;
+            document.getElementById('main-screen').style.display = 'none';
+            document.getElementById('summary-screen').style.display = 'block';
+        }
+
+        function returnToMain() {
+            document.getElementById('main-screen').style.display = 'flex';
+            document.getElementById('summary-screen').style.display = 'none';
+            document.getElementById('employee-id').value = '';
+        }
+
+        function goBack() {
+            alert('ย้อนกลับไปหน้าหลัก');
+        }
+    </script>
+</body>
+</html>
